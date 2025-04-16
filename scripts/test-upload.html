@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Character Upload Test</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #1a1a1a;
+      color: #f0f0f0;
+    }
+    h1 {
+      color: #4caf50;
+    }
+    pre {
+      background-color: #2a2a2a;
+      padding: 15px;
+      border-radius: 5px;
+      overflow-x: auto;
+      white-space: pre-wrap;
+    }
+    button {
+      background-color: #4caf50;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+    button:hover {
+      background-color: #3e8e41;
+    }
+    .result {
+      margin-top: 20px;
+    }
+    .success {
+      color: #4caf50;
+    }
+    .error {
+      color: #f44336;
+    }
+  </style>
+</head>
+<body>
+  <h1>Character Upload Test</h1>
+  
+  <h2>Test Character (Old Format)</h2>
+  <pre id="characterJson"></pre>
+  
+  <button id="uploadBtn">Upload Character</button>
+  
+  <div class="result">
+    <h2>Result</h2>
+    <pre id="resultJson"></pre>
+  </div>
+  
+  <script>
+    // Test character in the old format
+    const testCharacter = {
+      "name": "TestCharacter",
+      "clients": ["twitter"],
+      "modelProvider": "anthropic",
+      "settings": {
+        "secrets": {},
+        "voice": {
+          "model": ""
+        }
+      },
+      "plugins": [],
+      "bio": [
+        "This is a test character.",
+        "Created to test the automatic format transformation."
+      ],
+      "lore": [
+        "Has a rich backstory.",
+        "Loves testing new features."
+      ],
+      "knowledge": [],
+      "messageExamples": [],
+      "postExamples": [],
+      "topics": [
+        "Testing, debugging, and software development."
+      ],
+      "style": {
+        "all": [
+          "Speaks clearly and precisely.",
+          "Uses technical language when appropriate."
+        ],
+        "chat": [
+          "Responds helpfully to questions.",
+          "Provides detailed explanations."
+        ],
+        "post": [
+          "Writes concise and informative posts.",
+          "Uses bullet points for clarity."
+        ]
+      },
+      "adjectives": [
+        "helpful",
+        "precise",
+        "technical"
+      ],
+      "people": []
+    };
+    
+    // Display the test character
+    document.getElementById('characterJson').textContent = JSON.stringify(testCharacter, null, 2);
+    
+    // Handle the upload button click
+    document.getElementById('uploadBtn').addEventListener('click', async () => {
+      try {
+        // Send a POST request to the upload-character endpoint
+        const response = await fetch('/api/upload-character', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(testCharacter),
+        });
+        
+        // Parse the response
+        const result = await response.json();
+        
+        // Display the result
+        const resultElement = document.getElementById('resultJson');
+        if (response.ok) {
+          resultElement.textContent = JSON.stringify(result, null, 2);
+          resultElement.className = 'success';
+        } else {
+          resultElement.textContent = JSON.stringify(result, null, 2);
+          resultElement.className = 'error';
+        }
+      } catch (error) {
+        // Display any errors
+        const resultElement = document.getElementById('resultJson');
+        resultElement.textContent = error.toString();
+        resultElement.className = 'error';
+      }
+    });
+  </script>
+</body>
+</html>
