@@ -8,8 +8,8 @@ import DashboardHeader from "../../components/dashboard-header";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "../../components/ui/card";
 import { Button } from "../../components/ui/button";
 import { ChevronLeft, ChevronRight, Music } from "lucide-react";
-import { MusicParams, MusicType, Gender, ProportionalValue, GENRES, MOODS, TIMBRES } from "../../music-dashboard/components/music-dashboard";
-import RemixMusicDashboard from "./remix-music-dashboard";
+import { MusicParams, MusicType, Gender, ProportionalValue, GENRES, MOODS, TIMBRES } from "../../components/simplified-music-dashboard";
+import SimplifiedRemixMusicDashboard from "../../components/simplified-remix-music-dashboard";
 
 interface Song {
   id: string;
@@ -792,7 +792,7 @@ export default function RemixPage() {
                       </div>
                       
                       {/* Remix Music Dashboard with Parameters */}
-                      <RemixMusicDashboard 
+                      <SimplifiedRemixMusicDashboard 
                         key={currentSong.id} 
                         initialParams={musicParams} 
                         songTitle={currentSong.title}
