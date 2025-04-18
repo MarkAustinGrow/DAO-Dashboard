@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { Music, Users, BarChart3, Vote, Layers, Youtube, Twitter, Instagram, Disc3, History, Code, UserCircle } from "lucide-react"
+import { Music, Users, BarChart3, Vote, Layers, Youtube, Twitter, Instagram, Disc3, History, Code, UserCircle, Wand2 } from "lucide-react"
 import {
   Sidebar,
   SidebarContent,
@@ -21,6 +21,7 @@ export default function DashboardSidebar() {
     { href: '/', icon: <Layers />, label: 'Dashboard' },
     { href: '/logs', icon: <History />, label: 'Logs' },
     { href: '/music', icon: <Music />, label: 'Music Content' },
+    { href: '/remix', icon: <Wand2 />, label: 'Remix Studio' },
     { href: '/agents', icon: <Users />, label: 'Agents' },
     { href: '/characters', icon: <UserCircle />, label: 'Characters' },
     { href: '/analytics', icon: <BarChart3 />, label: 'Analytics' },
