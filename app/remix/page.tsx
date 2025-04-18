@@ -2,13 +2,13 @@
 
 import { useState, useEffect } from 'react';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
-import { SidebarProvider } from "@/components/ui/sidebar";
-import DashboardSidebar from "@/components/dashboard-sidebar";
-import DashboardHeader from "@/components/dashboard-header";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { SidebarProvider } from "../../components/ui/sidebar";
+import DashboardSidebar from "../../components/dashboard-sidebar";
+import DashboardHeader from "../../components/dashboard-header";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "../../components/ui/card";
+import { Button } from "../../components/ui/button";
 import { ChevronLeft, ChevronRight, Music } from "lucide-react";
-import { MusicParams, MusicType, Gender, ProportionalValue, GENRES, MOODS, TIMBRES } from "@/music-dashboard/components/music-dashboard";
+import { MusicParams, MusicType, Gender, ProportionalValue, GENRES, MOODS, TIMBRES } from "../../music-dashboard/components/music-dashboard";
 import RemixMusicDashboard from "./remix-music-dashboard";
 
 interface Song {

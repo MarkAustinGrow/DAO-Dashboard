@@ -1,10 +1,10 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { LyricsInput } from "@/music-dashboard/components/lyrics-input"
-import { ParameterTabs } from "@/music-dashboard/components/parameter-tabs"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
+import { LyricsInput } from "../../music-dashboard/components/lyrics-input"
+import { ParameterTabs } from "../../music-dashboard/components/parameter-tabs"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../../components/ui/card"
+import { Button } from "../../components/ui/button"
 import { Loader2, Music } from "lucide-react"
 import { 
   MusicType, 
@@ -14,7 +14,7 @@ import {
   GENRES, 
   MOODS, 
   TIMBRES 
-} from "@/music-dashboard/components/music-dashboard"
+} from "../../music-dashboard/components/music-dashboard"
 
 interface RemixMusicDashboardProps {
   initialParams: MusicParams
