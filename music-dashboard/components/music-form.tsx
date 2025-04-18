@@ -96,11 +96,15 @@ export function MusicForm({ params, onChange, onGenerate, isGenerating }: MusicF
       {params.type === "vocal" && (
         <div className="space-y-2">
           <Label>Gender</Label>
-          <Select value={params.gender} onValueChange={(value) => onChange({ gender: value as "Female" | "Male" })}>
+          <Select 
+            value={params.gender || ""} 
+            onValueChange={(value) => onChange({ gender: value ? (value as "Female" | "Male") : null })}
+          >
             <SelectTrigger>
               <SelectValue placeholder="Auto-detect gender" />
             </SelectTrigger>
             <SelectContent>
+              <SelectItem value="">Auto-detect</SelectItem>
               <SelectItem value="Female">Female</SelectItem>
               <SelectItem value="Male">Male</SelectItem>
             </SelectContent>
@@ -110,11 +114,24 @@ export function MusicForm({ params, onChange, onGenerate, isGenerating }: MusicF
 
       <div className="space-y-2">
         <Label>Genre</Label>
-        <Select value={params.genre} onValueChange={(value) => onChange({ genre: value })}>
+        <Select 
+          value={params.genreProportions.find(g => g.value > 0)?.name || ""} 
+          onValueChange={(value) => {
+            if (value) {
+              // Create a new array with the selected genre having value 100 and others 0
+              const newGenreProportions = GENRES.map(name => ({
+                name,
+                value: name === value ? 100 : 0
+              }));
+              onChange({ genreProportions: newGenreProportions });
+            }
+          }}
+        >
           <SelectTrigger>
             <SelectValue placeholder="Auto-detect genre" />
           </SelectTrigger>
           <SelectContent>
+            <SelectItem value="">Auto-detect</SelectItem>
             {GENRES.map((genre) => (
               <SelectItem key={genre} value={genre}>
                 {genre}
@@ -126,11 +143,24 @@ export function MusicForm({ params, onChange, onGenerate, isGenerating }: MusicF
 
       <div className="space-y-2">
         <Label>Mood</Label>
-        <Select value={params.mood} onValueChange={(value) => onChange({ mood: value })}>
+        <Select 
+          value={params.moodProportions.find(m => m.value > 0)?.name || ""} 
+          onValueChange={(value) => {
+            if (value) {
+              // Create a new array with the selected mood having value 100 and others 0
+              const newMoodProportions = MOODS.map(name => ({
+                name,
+                value: name === value ? 100 : 0
+              }));
+              onChange({ moodProportions: newMoodProportions });
+            }
+          }}
+        >
           <SelectTrigger>
             <SelectValue placeholder="Auto-detect mood" />
           </SelectTrigger>
           <SelectContent>
+            <SelectItem value="">Auto-detect</SelectItem>
             {MOODS.map((mood) => (
               <SelectItem key={mood} value={mood}>
                 {mood}
@@ -142,11 +172,24 @@ export function MusicForm({ params, onChange, onGenerate, isGenerating }: MusicF
 
       <div className="space-y-2">
         <Label>Timbre</Label>
-        <Select value={params.timbre} onValueChange={(value) => onChange({ timbre: value })}>
+        <Select 
+          value={params.timbreProportions.find(t => t.value > 0)?.name || ""} 
+          onValueChange={(value) => {
+            if (value) {
+              // Create a new array with the selected timbre having value 100 and others 0
+              const newTimbreProportions = TIMBRES.map(name => ({
+                name,
+                value: name === value ? 100 : 0
+              }));
+              onChange({ timbreProportions: newTimbreProportions });
+            }
+          }}
+        >
           <SelectTrigger>
             <SelectValue placeholder="Auto-detect timbre" />
           </SelectTrigger>
           <SelectContent>
+            <SelectItem value="">Auto-detect</SelectItem>
             {TIMBRES.map((timbre) => (
               <SelectItem key={timbre} value={timbre}>
                 {timbre}
