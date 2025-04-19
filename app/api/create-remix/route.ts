@@ -21,11 +21,17 @@ export async function POST(request: Request) {
     // Create a new remix entry in the influence_music table
     const title = `Remix of ${originalSongTitle || 'Unknown'}`;
     
+    // Create a placeholder URL or use a default one
+    const url = `https://www.marvin-music.com/remix/${crypto.randomUUID()}`;
+    
+    // Add title to the params object
+    params.title = title;
+    
     const { data, error } = await supabase
       .from('influence_music')
       .insert({
-        title,
-        params_used: JSON.stringify(params),
+        url: url,
+        analysis: params, // Store the params directly in the analysis field
         song_id: null, // Set song_id to NULL as specified
         created_at: new Date().toISOString()
       })
