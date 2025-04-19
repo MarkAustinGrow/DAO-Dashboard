@@ -8,6 +8,7 @@ import DashboardHeader from "../../components/dashboard-header";
 import { GENRES, MOODS, TIMBRES } from "../../components/remix/types";
 import type { MusicParams, Song, ProportionalValue } from "../../components/remix/types";
 import SimplifiedRemixDashboard from "./simplified-remix-dashboard";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
 export default function RemixPage() {
   const [currentSongIndex, setCurrentSongIndex] = useState(0);
@@ -287,18 +288,18 @@ export default function RemixPage() {
           <DashboardHeader />
           <main className="flex-1 overflow-auto">
             <div className="flex-1 space-y-4 p-4 md:p-8">
-              <div className="bg-gray-900 rounded-lg shadow-md">
-                <div className="p-4 border-b border-gray-800">
-                  <h1 className="text-xl font-bold text-white">Remix Studio</h1>
-                  <p className="text-gray-400">Create new songs based on existing templates</p>
-                </div>
-                <div className="p-4">
-                  {/* Song Navigation - Simplified */}
-                  <div className="flex justify-between items-center mb-6">
+              <Card className="border-purple-500/30 bg-purple-900/20 text-white">
+                <CardHeader className="pb-3">
+                  <CardTitle className="text-xl font-bold text-green-500">Remix Studio</CardTitle>
+                  <CardDescription className="text-purple-300">Create new songs based on existing templates</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  {/* Song Navigation - Improved */}
+                  <div className="flex justify-between items-center mb-6 bg-purple-950/50 p-3 rounded-lg">
                     <button
                       onClick={prevSong}
                       disabled={isLoading || currentSongIndex === 0}
-                      className="px-4 py-2 bg-purple-800 text-white rounded disabled:opacity-50"
+                      className="px-4 py-2 bg-purple-800/70 hover:bg-purple-700/70 text-white rounded-lg transition-colors disabled:opacity-50 disabled:hover:bg-purple-800/70"
                     >
                       Previous
                     </button>
@@ -307,7 +308,7 @@ export default function RemixPage() {
                       <h2 className="text-lg font-bold text-white">
                         {isLoading ? 'Loading...' : currentSong?.title || 'No songs available'}
                       </h2>
-                      <span className="text-sm text-gray-400">
+                      <span className="text-sm text-purple-300">
                         Song {currentSongIndex + 1} of {totalSongs}
                       </span>
                     </div>
@@ -315,7 +316,7 @@ export default function RemixPage() {
                     <button
                       onClick={nextSong}
                       disabled={isLoading || currentSongIndex === totalSongs - 1}
-                      className="px-4 py-2 bg-purple-800 text-white rounded disabled:opacity-50"
+                      className="px-4 py-2 bg-purple-800/70 hover:bg-purple-700/70 text-white rounded-lg transition-colors disabled:opacity-50 disabled:hover:bg-purple-800/70"
                     >
                       Next
                     </button>
@@ -328,17 +329,20 @@ export default function RemixPage() {
                     </div>
                   )}
                   
-                  {/* Loading State - Simplified */}
+                  {/* Loading State - Improved */}
                   {isLoading ? (
-                    <div className="flex items-center justify-center h-64">
-                      <p className="text-white">Loading song data...</p>
+                    <div className="flex items-center justify-center h-64 bg-purple-950/30 rounded-lg">
+                      <div className="text-center">
+                        <div className="animate-spin w-8 h-8 border-4 border-purple-500 border-t-transparent rounded-full mx-auto mb-2"></div>
+                        <p className="text-purple-300">Loading song data...</p>
+                      </div>
                     </div>
                   ) : currentSong && musicParams ? (
                     <div className="space-y-6">
                       {/* Notice about remix functionality */}
-                      <div className="bg-gray-800 p-4 rounded-lg">
-                        <p className="text-gray-300 text-sm">
-                          <strong>Note:</strong> You are creating a new remix based on "{currentSong.title}". 
+                      <div className="bg-purple-900/30 border border-purple-500/30 p-4 rounded-lg">
+                        <p className="text-purple-300 text-sm">
+                          <strong className="text-green-500">Note:</strong> You are creating a new remix based on "{currentSong.title}". 
                           Any changes you make here will not affect the original song. 
                           Click "Generate Remix" to save your changes as a new remix.
                         </p>
@@ -353,12 +357,12 @@ export default function RemixPage() {
                       />
                     </div>
                   ) : (
-                    <div className="text-center py-12">
-                      <p className="text-gray-400">No songs available to remix.</p>
+                    <div className="text-center py-12 bg-purple-950/30 rounded-lg">
+                      <p className="text-purple-300">No songs available to remix.</p>
                     </div>
                   )}
-                </div>
-              </div>
+                </CardContent>
+              </Card>
             </div>
           </main>
         </div>
