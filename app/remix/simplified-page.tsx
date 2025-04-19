@@ -9,7 +9,7 @@ import { GENRES, MOODS, TIMBRES } from "../../components/remix/types";
 import type { MusicParams, Song, ProportionalValue } from "../../components/remix/types";
 import SimplifiedRemixDashboard from "./simplified-remix-dashboard";
 
-export default function RemixPage() {
+export default function SimplifiedRemixPage() {
   const [currentSongIndex, setCurrentSongIndex] = useState(0);
   const [totalSongs, setTotalSongs] = useState(0);
   const [currentSong, setCurrentSong] = useState<Song | null>(null);
@@ -143,90 +143,28 @@ export default function RemixPage() {
       
       // Determine gender
       let gender: "Female" | "Male" | null = null;
-      if (params.gender || params.voice_gender) {
-        const genderValue = params.gender || params.voice_gender;
-        if (typeof genderValue === 'string') {
-          gender = genderValue.toLowerCase() === 'female' ? 'Female' : 
-                  genderValue.toLowerCase() === 'male' ? 'Male' : null;
+      if (params.gender) {
+        if (typeof params.gender === 'string') {
+          gender = params.gender.toLowerCase() === 'female' ? 'Female' : 
+                  params.gender.toLowerCase() === 'male' ? 'Male' : null;
         }
       }
       
       // Determine music type
-      const type = params.type === 'bgm' || params.make_instrumental === true ? 'bgm' : 'vocal';
+      const type = params.type === 'bgm' ? 'bgm' : 'vocal';
       
       // Determine duration
       const duration = params.duration && !isNaN(parseInt(params.duration)) ? 
                       parseInt(params.duration) : 120;
       
-      // Map genre proportions - check all possible locations
-      let genreData: any[] = [];
+      // Map genre proportions
+      const genreProportions = mapProportions(params.genreProportions || [], GENRES);
       
-      // Check in order of priority
-      if (params.genreProportions && Array.isArray(params.genreProportions) && params.genreProportions.length > 0) {
-        genreData = params.genreProportions;
-      } else if (params.original_analysis && params.original_analysis.genre_proportions && 
-                Array.isArray(params.original_analysis.genre_proportions) && 
-                params.original_analysis.genre_proportions.length > 0) {
-        // Convert from weight to value
-        genreData = params.original_analysis.genre_proportions.map((genre: any) => ({
-          name: genre.name,
-          value: genre.weight
-        }));
-      } else if (params.original_analysis && params.original_analysis.genres && 
-                Array.isArray(params.original_analysis.genres) && 
-                params.original_analysis.genres.length > 0) {
-        // Convert from weight to value
-        genreData = params.original_analysis.genres.map((genre: any) => ({
-          name: genre.name,
-          value: genre.weight || genre.score || 50
-        }));
-      }
+      // Map mood proportions
+      const moodProportions = mapProportions(params.moodProportions || [], MOODS);
       
-      const genreProportions = mapProportions(genreData, GENRES);
-      
-      // Map mood proportions - check all possible locations
-      let moodData: any[] = [];
-      
-      // Check in order of priority
-      if (params.moodProportions && Array.isArray(params.moodProportions) && params.moodProportions.length > 0) {
-        moodData = params.moodProportions;
-      } else if (params.original_analysis && params.original_analysis.mood_proportions && 
-                Array.isArray(params.original_analysis.mood_proportions) && 
-                params.original_analysis.mood_proportions.length > 0) {
-        // Convert from weight to value
-        moodData = params.original_analysis.mood_proportions.map((mood: any) => ({
-          name: mood.name,
-          value: mood.weight
-        }));
-      } else if (params.original_analysis && params.original_analysis.moods && 
-                Array.isArray(params.original_analysis.moods) && 
-                params.original_analysis.moods.length > 0) {
-        // Convert from weight to value
-        moodData = params.original_analysis.moods.map((mood: any) => ({
-          name: mood.name,
-          value: mood.weight || mood.score || 50
-        }));
-      }
-      
-      const moodProportions = mapProportions(moodData, MOODS);
-      
-      // Map timbre proportions - check all possible locations
-      let timbreData: any[] = [];
-      
-      // Check in order of priority
-      if (params.timbreProportions && Array.isArray(params.timbreProportions) && params.timbreProportions.length > 0) {
-        timbreData = params.timbreProportions;
-      } else if (params.original_analysis && params.original_analysis.timbre_proportions && 
-                Array.isArray(params.original_analysis.timbre_proportions) && 
-                params.original_analysis.timbre_proportions.length > 0) {
-        // Convert from weight to value
-        timbreData = params.original_analysis.timbre_proportions.map((timbre: any) => ({
-          name: timbre.name,
-          value: timbre.weight
-        }));
-      }
-      
-      const timbreProportions = mapProportions(timbreData, TIMBRES);
+      // Map timbre proportions
+      const timbreProportions = mapProportions(params.timbreProportions || [], TIMBRES);
       
       return {
         type,
