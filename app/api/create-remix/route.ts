@@ -18,16 +18,15 @@ export async function POST(request: Request) {
     // Initialize Supabase client
     const supabase = createRouteHandlerClient({ cookies });
     
-    // Create a new song entry
+    // Create a new remix entry in the influence_music table
     const title = `Remix of ${originalSongTitle || 'Unknown'}`;
     
     const { data, error } = await supabase
-      .from('songs')
+      .from('influence_music')
       .insert({
         title,
         params_used: JSON.stringify(params),
-        original_song_id: originalSongId,
-        status: 'pending',
+        song_id: null, // Set song_id to NULL as specified
         created_at: new Date().toISOString()
       })
       .select()
@@ -47,7 +46,7 @@ export async function POST(request: Request) {
     return NextResponse.json({
       success: true,
       message: 'Remix created successfully',
-      songId: data.id,
+      remixId: data.id,
       title
     });
   } catch (error: any) {
