@@ -9,9 +9,9 @@ services:
       - "3000:3000"
     environment:
       # Supabase environment variables
-      - NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
-      - NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
-      # Add any other environment variables your app needs
+      - NEXT_PUBLIC_SUPABASE_URL=https://oeexwetwqsooikroobgm.supabase.co
+      - NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9lZXh3ZXR3cXNvb2lrcm9vYmdtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDIyMDM0MzAsImV4cCI6MjA1Nzc3OTQzMH0.9NIfu8uf2Oof3MU9xKc5uYm47Yey-cfY8wZHRo8RQHI
+      - SUPABASE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9lZXh3ZXR3cXNvb2lrcm9vYmdtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDIyMDM0MzAsImV4cCI6MjA1Nzc3OTQzMH0.9NIfu8uf2Oof3MU9xKc5uYm47Yey-cfY8wZHRo8RQHI
     restart: unless-stopped
     # For production, you might want to add healthcheck
     healthcheck:
