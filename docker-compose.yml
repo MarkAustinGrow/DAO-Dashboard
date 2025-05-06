@@ -7,13 +7,9 @@ services:
       dockerfile: Dockerfile
     ports:
       - "3000:3000"
-    environment:
-      # Supabase environment variables
-      - NEXT_PUBLIC_SUPABASE_URL=https://oeexwetwqsooikroobgm.supabase.co
-      - NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9lZXh3ZXR3cXNvb2lrcm9vYmdtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDIyMDM0MzAsImV4cCI6MjA1Nzc3OTQzMH0.9NIfu8uf2Oof3MU9xKc5uYm47Yey-cfY8wZHRo8RQHI
-      - SUPABASE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9lZXh3ZXR3cXNvb2lrcm9vYmdtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDIyMDM0MzAsImV4cCI6MjA1Nzc3OTQzMH0.9NIfu8uf2Oof3MU9xKc5uYm47Yey-cfY8wZHRo8RQHI
+    env_file:
+      - .env
     restart: unless-stopped
-    # For production, you might want to add healthcheck
     healthcheck:
       test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3000"]
       interval: 30s
