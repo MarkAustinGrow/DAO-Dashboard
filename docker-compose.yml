@@ -5,8 +5,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.simple
-    ports:
-      - "3000:3000"
+    network_mode: "host"
     env_file:
       - .env
     restart: unless-stopped
