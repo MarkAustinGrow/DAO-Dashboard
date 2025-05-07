@@ -3,10 +3,10 @@ import { createClient } from '@supabase/supabase-js';
 
 export async function POST(request: Request) {
   try {
-    const { songId, score, timestamp } = await request.json();
-    
+    const { songId, score, timestamp, anonymousId } = await request.json();
+
     // Validate input
-    if (!songId || typeof score !== 'number' || score < 0 || score > 10) {
+    if (!songId || typeof score !== 'number' || score < 0 || score > 10 || !anonymousId) {
       return NextResponse.json({ error: 'Invalid input' }, { status: 400 });
     }
     
@@ -25,14 +25,45 @@ export async function POST(request: Request) {
     
     const supabase = createClient(supabaseUrl, supabaseKey);
     
-    // Store the vote
-    const { error: voteError } = await supabase
+    // Check if this anonymous user has already voted for this song
+    const { data: existingVote, error: checkError } = await supabase
       .from('song_votes')
-      .insert({
-        song_id: songId,
-        score,
-        timestamp: timestamp || new Date().toISOString()
-      });
+      .select('id')
+      .eq('song_id', songId)
+      .eq('anonymous_id', anonymousId)
+      .maybeSingle();
+    
+    if (checkError) {
+      console.error('Error checking for existing vote:', checkError);
+      return NextResponse.json({ error: 'Failed to check for existing vote' }, { status: 500 });
+    }
+    
+    let voteError;
+    
+    if (existingVote) {
+      // Update existing vote
+      const { error } = await supabase
+        .from('song_votes')
+        .update({
+          score,
+          timestamp: timestamp || new Date().toISOString()
+        })
+        .eq('id', existingVote.id);
+      
+      voteError = error;
+    } else {
+      // Insert new vote
+      const { error } = await supabase
+        .from('song_votes')
+        .insert({
+          song_id: songId,
+          score,
+          anonymous_id: anonymousId,
+          timestamp: timestamp || new Date().toISOString()
+        });
+      
+      voteError = error;
+    }
     
     if (voteError) {
       console.error('Error storing vote:', voteError);

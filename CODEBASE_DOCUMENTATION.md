@@ -249,6 +249,7 @@ The Marvin Dashboard includes a privacy-focused anonymous voting system for song
    - song_id: string (references songs.id)
    - score: number (0-10)
    - timestamp: timestamp
+   - anonymous_id: string (tracks votes from the same anonymous user)
 
 9. **votes**
    - id: uuid

@@ -55,8 +55,16 @@ export async function GET() {
     // Sort by weighted score
     rankedData.sort((a: any, b: any) => b.weighted_score - a.weighted_score);
     
-    // Return the ranked data
-    return NextResponse.json(rankedData || []);
+    // Return the ranked data with weighted scores
+    return NextResponse.json(rankedData.map(song => ({
+      id: song.id,
+      title: song.title,
+      average_score: song.average_score,
+      vote_count: song.vote_count,
+      image_url: song.image_url,
+      audio_url: song.audio_url,
+      weighted_score: song.weighted_score
+    })) || []);
   } catch (error: any) {
     console.error('Unhandled error:', error);
     return NextResponse.json({ 

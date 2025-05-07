@@ -16,16 +16,17 @@ import { getOrCreateAnonymousId } from "@/lib/anonymousVoting";
 interface Song {
   id: string;
   title: string;
-  lyrics: string;
+  lyrics?: string;
   audio_url: string;
-  style: string;
-  created_at: string;
-  is_cover: boolean;
-  duration: number;
-  params_used: string;
+  style?: string;
+  created_at?: string;
+  is_cover?: boolean;
+  duration?: number;
+  params_used?: string;
   image_url: string | null;
   average_score: number | null;
   vote_count: number | null;
+  weighted_score?: number;
 }
 
 export default function MusicPage() {
@@ -61,8 +62,8 @@ export default function MusicPage() {
   // Handle vote submission
   const handleVote = useCallback(async (songId: string, score: number) => {
     try {
-      // Ensure we have an anonymous ID
-      getOrCreateAnonymousId();
+      // Get the anonymous ID
+      const anonymousId = getOrCreateAnonymousId();
       
       const response = await fetch('/api/song-vote', {
         method: 'POST',
@@ -72,6 +73,7 @@ export default function MusicPage() {
         body: JSON.stringify({
           songId,
           score,
+          anonymousId,
           timestamp: new Date().toISOString()
         }),
       });
@@ -353,12 +355,17 @@ export default function MusicPage() {
                             </div>
                             
                             {/* Score */}
-                            <div className="flex items-center">
-                              <span className={`text-base font-semibold text-green-500 ${currentlyPlaying === song.id ? 'animate-pulse' : ''}`}>
-                                {song.average_score}/10
-                              </span>
-                              <span className="text-xs text-purple-300 ml-1">
-                                ({song.vote_count === 1 ? '1' : song.vote_count})
+                            <div className="flex flex-col items-end">
+                              <div className="flex items-center">
+                                <span className={`text-base font-semibold text-green-500 ${currentlyPlaying === song.id ? 'animate-pulse' : ''}`}>
+                                  {song.average_score}/10
+                                </span>
+                                <span className="text-xs text-purple-300 ml-1">
+                                  ({song.vote_count === 1 ? '1' : song.vote_count})
+                                </span>
+                              </div>
+                              <span className="text-xs text-purple-400">
+                                Weighted: {song.weighted_score}
                               </span>
                             </div>
                           </div>
