@@ -19,6 +19,10 @@ COPY . .
 # Set environment variables
 ENV NEXT_TELEMETRY_DISABLED=1
 
+# Accept build arguments for API keys
+ARG OPENAI_API_KEY
+ENV OPENAI_API_KEY=$OPENAI_API_KEY
+
 # Build the application (skip linting to avoid ESLint errors)
 RUN npm run build -- --no-lint
 
@@ -28,6 +32,10 @@ WORKDIR /app
 
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
+
+# Pass API keys to runtime environment
+ARG OPENAI_API_KEY
+ENV OPENAI_API_KEY=$OPENAI_API_KEY
 
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
