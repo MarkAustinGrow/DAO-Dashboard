@@ -19,9 +19,14 @@ COPY . .
 # Set environment variables
 ENV NEXT_TELEMETRY_DISABLED=1
 
-# Accept build arguments for API keys
+# Accept build arguments for API keys and credentials
 ARG OPENAI_API_KEY
+ARG NEXT_PUBLIC_SUPABASE_URL
+ARG NEXT_PUBLIC_SUPABASE_ANON_KEY
+
 ENV OPENAI_API_KEY=$OPENAI_API_KEY
+ENV NEXT_PUBLIC_SUPABASE_URL=$NEXT_PUBLIC_SUPABASE_URL
+ENV NEXT_PUBLIC_SUPABASE_ANON_KEY=$NEXT_PUBLIC_SUPABASE_ANON_KEY
 
 # Build the application (skip linting to avoid ESLint errors)
 RUN npm run build -- --no-lint
@@ -33,9 +38,14 @@ WORKDIR /app
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
 
-# Pass API keys to runtime environment
+# Pass API keys and credentials to runtime environment
 ARG OPENAI_API_KEY
+ARG NEXT_PUBLIC_SUPABASE_URL
+ARG NEXT_PUBLIC_SUPABASE_ANON_KEY
+
 ENV OPENAI_API_KEY=$OPENAI_API_KEY
+ENV NEXT_PUBLIC_SUPABASE_URL=$NEXT_PUBLIC_SUPABASE_URL
+ENV NEXT_PUBLIC_SUPABASE_ANON_KEY=$NEXT_PUBLIC_SUPABASE_ANON_KEY
 
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
