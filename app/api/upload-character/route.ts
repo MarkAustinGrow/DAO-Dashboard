@@ -4,13 +4,13 @@ import { createClient } from '@supabase/supabase-js';
 export async function POST(request: NextRequest) {
   try {
     // Check if environment variables are set
-    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-    const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
-    
-    if (!supabaseUrl || !supabaseServiceKey) {
-      console.error('Server: Missing environment variables', { 
-        hasUrl: !!supabaseUrl, 
-        hasServiceKey: !!supabaseServiceKey 
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL;
+    const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_KEY;
+
+    if (!supabaseUrl || !supabaseKey) {
+      console.error('Server: Missing environment variables', {
+        hasUrl: !!supabaseUrl,
+        hasKey: !!supabaseKey
       });
       return NextResponse.json({ 
         error: 'Server configuration error: Missing environment variables' 
@@ -18,7 +18,7 @@ export async function POST(request: NextRequest) {
     }
     
     // Initialize Supabase client
-    const supabase = createClient(supabaseUrl, supabaseServiceKey);
+    const supabase = createClient(supabaseUrl, supabaseKey);
     
     // Parse the JSON from the request
     const data = await request.json();
