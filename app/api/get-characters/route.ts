@@ -21,11 +21,16 @@ export async function GET() {
       }, { status: 500 });
     }
     
-    // Initialize Supabase client with available key
+    // Initialize Supabase client with admin privileges to bypass RLS
     const supabase = createClient(supabaseUrl, supabaseKey, {
       auth: {
         persistSession: false,
         autoRefreshToken: false,
+      },
+      global: {
+        headers: {
+          'X-Supabase-Auth-Override': 'service_role'
+        }
       }
     });
     

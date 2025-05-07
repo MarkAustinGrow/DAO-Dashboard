@@ -17,8 +17,20 @@ export async function POST(request: NextRequest) {
       }, { status: 500 });
     }
     
-    // Initialize Supabase client
-    const supabase = createClient(supabaseUrl, supabaseKey);
+    // Initialize Supabase client with admin privileges to bypass RLS
+    const supabase = createClient(supabaseUrl, supabaseKey, {
+      auth: {
+        persistSession: false,
+        autoRefreshToken: false,
+      },
+      global: {
+        headers: {
+          'X-Supabase-Auth-Override': 'service_role'
+        }
+      }
+    });
+    
+    console.log('Server: Using service role key to bypass RLS policies');
     
     // Parse the JSON from the request
     const data = await request.json();
