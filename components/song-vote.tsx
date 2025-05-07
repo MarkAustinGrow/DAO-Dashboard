@@ -67,10 +67,10 @@ export function SongVote({ songId, onVote }: SongVoteProps) {
       </Button>
       
       <p className="text-xs text-purple-400 text-center hidden sm:block">
-        Private & resets daily. All votes are anonymous.
+        Your votes are private and anonymous.
       </p>
       <p className="text-[10px] text-purple-400 text-center sm:hidden">
-        Private & resets daily
+        Votes are anonymous
       </p>
     </div>
   );

@@ -378,7 +378,7 @@ export default function MusicPage() {
                 <div className="bg-purple-900/30 p-4 rounded-lg sm:block hidden">
                   <h3 className="text-lg font-semibold text-green-500 mb-2">Privacy Information</h3>
                   <p className="text-purple-300">
-                    All votes are anonymous and reset daily. Only you can see what you voted. 
+                    All votes are anonymous. Only you can see what you voted.
                     We only track what the crowd loves, not who voted for what.
                   </p>
                 </div>

@@ -127,7 +127,7 @@ The Marvin Dashboard includes a privacy-focused anonymous voting system for song
 ### Key Features
 
 - **Anonymous Voting**: Users can rate songs from 0 to 10 without creating an account
-- **Daily Reset**: Votes are stored locally and reset daily to maintain privacy
+- **Persistent Voting**: Votes are stored persistently while maintaining user privacy
 - **Transparent Rankings**: Songs are ranked by average score with vote counts displayed
 - **Privacy-First Design**: No tracking of IP addresses, cookies, or persistent identifiers
 
@@ -139,10 +139,10 @@ The Marvin Dashboard includes a privacy-focused anonymous voting system for song
    - Slider for rating songs from 0 to 10
    - Submit/Update button for vote submission
    - Display of user's current vote
-   - Privacy message indicating votes are anonymous and reset daily
+   - Privacy message indicating votes are anonymous
 
 2. **Anonymous Voting Utilities** (`lib/anonymousVoting.ts`)
-   - `getOrCreateAnonymousId()`: Generates a temporary anonymous ID that resets daily
+   - `getOrCreateAnonymousId()`: Generates a persistent anonymous ID for the user
    - `getUserVotes()`: Retrieves user's votes from localStorage
    - `saveUserVote()`: Saves a user's vote to localStorage
 
@@ -166,19 +166,19 @@ The Marvin Dashboard includes a privacy-focused anonymous voting system for song
 ### User Flow
 
 1. User visits the Music page
-2. System generates a temporary anonymous ID or uses existing ID for the day
+2. System generates a persistent anonymous ID or uses existing ID
 3. User rates a song using the slider and submits vote
 4. Vote is stored locally and sent to the server anonymously
 5. Song's average score and ranking are updated
 6. User can view all song rankings in the Charts tab
-7. User's votes reset the next day, allowing for fresh feedback
+7. User's votes are remembered across sessions
 
 ### Privacy Measures
 
 - No user accounts required for voting
 - No IP address tracking
 - No persistent cookies or identifiers
-- Daily reset of anonymous IDs
+- Anonymous but persistent voting
 - Transparent messaging about privacy practices
 
 ### Main Tables
@@ -345,6 +345,68 @@ The Marvin Dashboard includes a privacy-focused anonymous voting system for song
 - Authentication flow
 - API route protection
 - Input validation
+- Supabase Row Level Security (RLS) configuration
+
+## Supabase Database Access and RLS Configuration
+
+### Row Level Security (RLS)
+
+The project uses Supabase as its database, which provides Row Level Security (RLS) features for controlling access to database tables. RLS allows you to define policies that restrict which rows a user can access in a table.
+
+#### Current RLS Configuration
+
+- **character_files table**: RLS has been disabled for this table to allow unrestricted access. This was done to simplify development and avoid authentication issues.
+  ```sql
+  ALTER TABLE character_files DISABLE ROW LEVEL SECURITY;
+  ```
+
+- **Other tables**: Other tables may have RLS enabled with specific policies. Check the Supabase dashboard for details on each table.
+
+### API Routes and Database Access
+
+The API routes use the Supabase JavaScript client to access the database. The client is initialized with the following configuration to bypass RLS policies:
+
+```javascript
+const supabaseUrl = process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL;
+const supabaseKey = process.env.SUPABASE_KEY;
+
+const supabase = createClient(supabaseUrl, supabaseKey, {
+  auth: {
+    persistSession: false,
+    autoRefreshToken: false,
+  },
+  global: {
+    headers: {
+      'X-Supabase-Auth-Override': 'service_role'
+    }
+  }
+});
+```
+
+This configuration:
+1. Uses the `SUPABASE_KEY` (service role key) for authentication
+2. Disables session persistence and token refresh
+3. Sets the `X-Supabase-Auth-Override` header to `service_role` to bypass RLS policies
+
+Character-related API routes that use this configuration:
+- `app/api/get-characters/route.ts`
+- `app/api/get-character/route.ts`
+- `app/api/upload-character/route.ts`
+- `app/api/update-character/route.ts`
+- `app/api/delete-character/route.ts`
+
+### Environment Variables for Database Access
+
+The Docker configuration includes the following environment variables for database access:
+
+```
+NEXT_PUBLIC_SUPABASE_URL
+NEXT_PUBLIC_SUPABASE_ANON_KEY
+SUPABASE_URL
+SUPABASE_KEY
+```
+
+These variables are passed to the Docker container through the docker-compose.yml file and the Dockerfile.
 
 ## Development Workflow
 1. Feature branches from `dev`
