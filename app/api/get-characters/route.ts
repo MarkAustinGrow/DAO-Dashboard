@@ -3,11 +3,9 @@ import { createClient } from '@supabase/supabase-js';
 
 export async function GET() {
   try {
-    // Check if environment variables are set
-    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL;
-    
-    // Explicitly use the service role key to bypass RLS
-    const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_KEY;
+    // Check if environment variables are set - use SUPABASE_KEY directly
+    const supabaseUrl = process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const supabaseKey = process.env.SUPABASE_KEY;
     
     console.log('Server: Using service role key to bypass RLS policies');
 

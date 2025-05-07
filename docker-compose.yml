@@ -9,6 +9,8 @@ services:
         - OPENAI_API_KEY=${OPENAI_API_KEY}
         - NEXT_PUBLIC_SUPABASE_URL=${NEXT_PUBLIC_SUPABASE_URL}
         - NEXT_PUBLIC_SUPABASE_ANON_KEY=${NEXT_PUBLIC_SUPABASE_ANON_KEY}
+        - SUPABASE_URL=${SUPABASE_URL}
+        - SUPABASE_KEY=${SUPABASE_KEY}
     env_file:
       - .env
     ports:
@@ -17,6 +19,8 @@ services:
       # Supabase environment variables
       - NEXT_PUBLIC_SUPABASE_URL=${NEXT_PUBLIC_SUPABASE_URL}
       - NEXT_PUBLIC_SUPABASE_ANON_KEY=${NEXT_PUBLIC_SUPABASE_ANON_KEY}
+      - SUPABASE_URL=${SUPABASE_URL}
+      - SUPABASE_KEY=${SUPABASE_KEY}
       # OpenAI API key
       - OPENAI_API_KEY=${OPENAI_API_KEY}
       # Add any other environment variables your app needs
