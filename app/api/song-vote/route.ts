@@ -10,20 +10,20 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Invalid input' }, { status: 400 });
     }
     
-    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-    const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
-    
-    if (!supabaseUrl || !supabaseServiceKey) {
-      console.error('Server: Missing environment variables', { 
-        hasUrl: !!supabaseUrl, 
-        hasServiceKey: !!supabaseServiceKey 
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL;
+    const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_KEY;
+
+    if (!supabaseUrl || !supabaseKey) {
+      console.error('Server: Missing environment variables', {
+        hasUrl: !!supabaseUrl,
+        hasKey: !!supabaseKey
       });
       return NextResponse.json({ 
         error: 'Server configuration error: Missing environment variables' 
       }, { status: 500 });
     }
     
-    const supabase = createClient(supabaseUrl, supabaseServiceKey);
+    const supabase = createClient(supabaseUrl, supabaseKey);
     
     // Store the vote
     const { error: voteError } = await supabase
